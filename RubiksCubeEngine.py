@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 import tkinter
 from RCE import RCE
 
@@ -16,6 +18,30 @@ class RubiksCubeEngine:
         # GUI
         self.window = tkinter.Tk()
         self.window.title('Rubik\'s Cube Engine')
+
+        # Menu
+        menu = tkinter.Menu(self.window)
+        self.window.config(menu=menu)
+
+        # File
+        file_menu = tkinter.Menu(menu)
+        menu.add_cascade(label='RCE', menu=file_menu)
+        
+        file_menu.add_command(label='Reset', command=self.buttonReset)
+        file_menu.add_separator()
+        file_menu.add_command(label='Exit', command=self.window.destroy)
+
+        # Settings
+        menu.add_command(label='Settings', command=self.buttonSettings)
+
+        # Help
+        help_menu = tkinter.Menu(menu)
+        menu.add_cascade(label='Help', menu=help_menu)
+
+        help_menu.add_command(label='About', command=self.buttonAbout)
+        help_menu.add_separator()
+        help_menu.add_command(label='Help', command=self.buttonHelp)
+
         
         self.labelAlg = tkinter.Label(self.window, text='Algorithm: ')
         self.entryAlg = tkinter.Entry(self.window, width=100)
@@ -23,9 +49,9 @@ class RubiksCubeEngine:
         self.buttonReset = tkinter.Button(self.window, text='Reset!', command=self.buttonReset)
         self.buttonClear = tkinter.Button(self.window, text='Clear!', command=self.buttonClear)
         self.c = tkinter.Canvas(self.window, width=600, height=475)
-        self.labelAbout = tkinter.Label(self.window, text='Author: Uroš H.')
-        self.buttonSettings = tkinter.Button(self.window, text='Settings', command=self.buttonSettings)
-        self.buttonHelp = tkinter.Button(self.window, text='Help', command=self.buttonHelp)
+        ##self.labelAbout = tkinter.Label(self.window, text='Author: Uroš H.')
+        #self.buttonSettings = tkinter.Button(self.window, text='Settings', command=self.buttonSettings)
+        #self.buttonHelp = tkinter.Button(self.window, text='Help', command=self.buttonHelp)
 
         # Position widgets
         self.labelAlg.grid(row=0, sticky=tkinter.E)
@@ -34,9 +60,9 @@ class RubiksCubeEngine:
         self.buttonClear.grid(row=1, column=1, sticky=tkinter.W)
         self.buttonApply.grid(row=1, column=2, sticky=tkinter.E)
         self.c.grid(row=2, columnspan=3)
-        #self.labelAbout.grid(row=3, column=2, sticky=tkinter.E)
-        self.buttonSettings.grid(row=3, column=0, sticky=tkinter.W)
-        self.buttonHelp.grid(row=3, column=1, sticky=tkinter.W)
+        ##self.labelAbout.grid(row=3, column=2, sticky=tkinter.E)
+        #self.buttonSettings.grid(row=3, column=0, sticky=tkinter.W)
+        #self.buttonHelp.grid(row=3, column=1, sticky=tkinter.W)
 
         self.entryAlg.focus_set()
 
@@ -144,7 +170,13 @@ class RubiksCubeEngine:
                 a.select()
                 
         windowSettings.mainloop()
-
+    def buttonAbout(self):
+        windowAbout = tkinter.Tk()
+        windowAbout.title('About')
+        label = tkinter.Label(windowAbout, text='This is a simple Rubik\'s Cube Engine written in Python by Uroš Hekić.')
+        label.grid(sticky=tkinter.W)
+        windowAbout.mainloop()
+    
     def buttonHelp(self):
         windowHelp = tkinter.Tk()
         windowHelp.title('Help')
@@ -173,5 +205,6 @@ as if you were looking at the face straight-on. Using the U face as an example, 
         label.grid(sticky=tkinter.W)
 
         windowHelp.mainloop()
-        
+
+
 cube = RubiksCubeEngine()

@@ -127,7 +127,7 @@ class RCE:
     def output(self, style = 'text_net'):
         if style == 'text_vertical':
             for face, stickers in enumerate(self.stickers):
-                print(self.turns_i[face].upper(), end=':\n');
+                print(self.turns_i[face].upper(), end=':\n')
                 for i, sticker in enumerate(stickers):
                     print(self.colors[sticker[0]], end='')
                     if i % 3 == 2:
