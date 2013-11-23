@@ -10,6 +10,9 @@ class RubiksCubeEngine:
     ]
     colorSetNames = { 0 : 'Default', 1 : 'Modern' }
     views = { 0 : '3x2', 1 : 'Net', 2 : '3D (TO-DO)'}
+
+    enableKeyboardShortcuts = True
+    Alt = False
     
     def __init__(self):
         self.setView(1)
@@ -27,27 +30,27 @@ class RubiksCubeEngine:
         file_menu = tkinter.Menu(menu)
         menu.add_cascade(label='RCE', menu=file_menu)
         
-        file_menu.add_command(label='Reset', command=self.buttonReset)
+        file_menu.add_command(label='Reset', command=self.Reset)
         file_menu.add_separator()
         file_menu.add_command(label='Exit', command=self.window.destroy)
 
         # Settings
-        menu.add_command(label='Settings', command=self.buttonSettings)
+        menu.add_command(label='Settings', command=self.Settings)
 
         # Help
         help_menu = tkinter.Menu(menu)
         menu.add_cascade(label='Help', menu=help_menu)
 
-        help_menu.add_command(label='About', command=self.buttonAbout)
+        help_menu.add_command(label='About', command=self.About)
         help_menu.add_separator()
-        help_menu.add_command(label='Help', command=self.buttonHelp)
+        help_menu.add_command(label='Help', command=self.Help)
 
         
         self.labelAlg = tkinter.Label(self.window, text='Algorithm: ')
         self.entryAlg = tkinter.Entry(self.window, width=100)
-        self.buttonApply = tkinter.Button(self.window, text='Apply!', command=self.buttonApply)
-        self.buttonReset = tkinter.Button(self.window, text='Reset!', command=self.buttonReset)
-        self.buttonClear = tkinter.Button(self.window, text='Clear!', command=self.buttonClear)
+        self.buttonApply = tkinter.Button(self.window, text='Apply!', command=self.Apply)
+        self.buttonReset = tkinter.Button(self.window, text='Reset!', command=self.Reset)
+        self.buttonClear = tkinter.Button(self.window, text='Clear!', command=self.Clear)
         self.c = tkinter.Canvas(self.window, width=600, height=475)
         ##self.labelAbout = tkinter.Label(self.window, text='Author: Uroš H.')
         #self.buttonSettings = tkinter.Button(self.window, text='Settings', command=self.buttonSettings)
@@ -63,6 +66,12 @@ class RubiksCubeEngine:
         ##self.labelAbout.grid(row=3, column=2, sticky=tkinter.E)
         #self.buttonSettings.grid(row=3, column=0, sticky=tkinter.W)
         #self.buttonHelp.grid(row=3, column=1, sticky=tkinter.W)
+
+        # Key bindings
+        self.window.bind("<Alt_L>", self.AltOn)
+        self.window.bind("<KeyRelease-Alt_L>", self.AltOff)
+        self.window.bind("a", self.AltA)
+        self.window.bind("c", self.AltC)
 
         self.entryAlg.focus_set()
 
@@ -122,28 +131,31 @@ class RubiksCubeEngine:
                                                 fill=self.colors[self.rc.stickers[face][3*line+sticker][0]],
                                                 outline=self.colors['border'])
 
-    def buttonApply(self):
+    def Apply(self):
         self.rc.alg(self.entryAlg.get().upper(), 'wca')
         self.draw()
         #self.entryAlg.delete(0, tkinter.END)
 
-    def buttonReset(self):
+    def Reset(self):
         self.entryAlg.delete(0, tkinter.END)
         self.rc = RCE()
         self.draw()
 
-    def buttonClear(self):
+    def Clear(self):
         self.entryAlg.delete(0, tkinter.END)
 
-    def buttonSettingsColorSetUpdate(self):
+    def SettingsColorSetUpdate(self):
         self.colorSet(self.csi.get())
         self.draw()
     
-    def buttonSettingsViewUpdate(self):
+    def SettingsViewUpdate(self):
         self.setView(self.vi.get())
         self.draw()
+
+    def SettingsKeyboardShortcutsUpdate(self):
+        self.enableKeyboardShortcuts = True if self.checkButtonShortcutsVar.get() == 1 else False
     
-    def buttonSettings(self):
+    def Settings(self):
         windowSettings = tkinter.Tk()
         windowSettings.title('Settings')
 
@@ -153,7 +165,7 @@ class RubiksCubeEngine:
         
         self.csi = tkinter.IntVar(master=windowSettings) # !!!
         for i in self.colorSetNames:
-            a = tkinter.Radiobutton(windowSettings, text=self.colorSetNames[i], value=i, variable=self.csi, command=self.buttonSettingsColorSetUpdate)
+            a = tkinter.Radiobutton(windowSettings, text=self.colorSetNames[i], value=i, variable=self.csi, command=self.SettingsColorSetUpdate)
             a.grid(column=1, sticky=tkinter.W)
             if i == self.colorSetI:
                 a.select()
@@ -164,20 +176,27 @@ class RubiksCubeEngine:
 
         self.vi = tkinter.IntVar(master=windowSettings)
         for i in self.views:
-            a = tkinter.Radiobutton(windowSettings, text=self.views[i], value=i, variable=self.vi, command=self.buttonSettingsViewUpdate)
+            a = tkinter.Radiobutton(windowSettings, text=self.views[i], value=i, variable=self.vi, command=self.SettingsViewUpdate)
             a.grid(column=1, sticky=tkinter.W)
             if i == self.view:
                 a.select()
+
+        # Enable keyboard shorcuts
+        self.checkButtonShortcutsVar = tkinter.IntVar(master=windowSettings)
+        checkButtonShortcuts = tkinter.Checkbutton(windowSettings, text='Enable keyboard shortcuts', variable=self.checkButtonShortcutsVar, command=self.SettingsKeyboardShortcutsUpdate)
+        if (self.enableKeyboardShortcuts): checkButtonShortcuts.select()
+        checkButtonShortcuts.grid(columnspan=2)
                 
         windowSettings.mainloop()
-    def buttonAbout(self):
+        
+    def About(self):
         windowAbout = tkinter.Tk()
         windowAbout.title('About')
         label = tkinter.Label(windowAbout, text='This is a simple Rubik\'s Cube Engine written in Python by Uroš Hekić.')
         label.grid(sticky=tkinter.W)
         windowAbout.mainloop()
     
-    def buttonHelp(self):
+    def Help(self):
         windowHelp = tkinter.Tk()
         windowHelp.title('Help')
 
@@ -201,10 +220,26 @@ as if you were looking at the face straight-on. Using the U face as an example, 
 - U - A 90-degree clockwise turn of the U face. 
 - U\' - A 90-degree counterclockwise turn of the U face. 
 - U2 - A 180-degree turn (either clockwise or counterclockwise) of the U face.
-(From Wiki @ Speedsolving.com)''', justify=tkinter.LEFT)
+(From Wiki @ Speedsolving.com)
+
+Keyboard shortcuts:
+Alt-A: Apply
+Alt-C: Clear''', justify=tkinter.LEFT)
         label.grid(sticky=tkinter.W)
 
         windowHelp.mainloop()
+
+    def AltOn(self, event):
+        self.Alt = True
+
+    def AltOff(self, event):
+        self.Alt = False
+
+    def AltA(self, event):
+        if (self.enableKeyboardShortcuts and self.Alt): self.Apply()
+
+    def AltC(self, event):
+        if (self.enableKeyboardShortcuts and self.Alt): self.Clear()
 
 
 cube = RubiksCubeEngine()
