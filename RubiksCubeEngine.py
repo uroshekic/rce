@@ -71,7 +71,7 @@ class RubiksCubeEngine:
 
         self.entryAlg.focus_set()
 
-        self.rc = RCE('', 'wca')
+        self.rc = RCE()
         self.draw() # Draw a solved cube
         
         self.window.mainloop()
@@ -128,7 +128,7 @@ class RubiksCubeEngine:
                                                 outline=self.colors['border'])
 
     def Apply(self):
-        self.rc.alg(self.entryAlg.get().upper(), 'wca')
+        self.rc.alg(self.entryAlg.get().upper().split())
         self.draw()
         #self.entryAlg.delete(0, tkinter.END)
 
