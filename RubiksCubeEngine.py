@@ -52,9 +52,6 @@ class RubiksCubeEngine:
         self.buttonReset = tkinter.Button(self.window, text='Reset!', command=self.Reset)
         self.buttonClear = tkinter.Button(self.window, text='Clear!', command=self.Clear)
         self.c = tkinter.Canvas(self.window, width=600, height=475)
-        ##self.labelAbout = tkinter.Label(self.window, text='Author: Uroš H.')
-        #self.buttonSettings = tkinter.Button(self.window, text='Settings', command=self.buttonSettings)
-        #self.buttonHelp = tkinter.Button(self.window, text='Help', command=self.buttonHelp)
 
         # Position widgets
         self.labelAlg.grid(row=0, sticky=tkinter.E)
@@ -63,15 +60,14 @@ class RubiksCubeEngine:
         self.buttonClear.grid(row=1, column=1, sticky=tkinter.W)
         self.buttonApply.grid(row=1, column=2, sticky=tkinter.E)
         self.c.grid(row=2, columnspan=3)
-        ##self.labelAbout.grid(row=3, column=2, sticky=tkinter.E)
-        #self.buttonSettings.grid(row=3, column=0, sticky=tkinter.W)
-        #self.buttonHelp.grid(row=3, column=1, sticky=tkinter.W)
 
         # Key bindings
         self.window.bind("<Alt_L>", self.AltOn)
         self.window.bind("<KeyRelease-Alt_L>", self.AltOff)
         self.window.bind("a", self.AltA)
         self.window.bind("c", self.AltC)
+        self.window.bind("<Return>", self.ReturnKey)
+        self.window.bind("<F1>", self.F1)
 
         self.entryAlg.focus_set()
 
@@ -223,8 +219,8 @@ as if you were looking at the face straight-on. Using the U face as an example, 
 (From Wiki @ Speedsolving.com)
 
 Keyboard shortcuts:
-Alt-A: Apply
-Alt-C: Clear''', justify=tkinter.LEFT)
+- Apply: Alt-A / Enter:
+- Clear: Alt-C''', justify=tkinter.LEFT)
         label.grid(sticky=tkinter.W)
 
         windowHelp.mainloop()
@@ -240,6 +236,12 @@ Alt-C: Clear''', justify=tkinter.LEFT)
 
     def AltC(self, event):
         if (self.enableKeyboardShortcuts and self.Alt): self.Clear()
+
+    def ReturnKey(self, event):
+        self.Apply()
+
+    def F1(self, event):
+        self.Help() # :D
 
 
 cube = RubiksCubeEngine()
