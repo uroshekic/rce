@@ -238,10 +238,10 @@ Keyboard shortcuts:
         if (self.enableKeyboardShortcuts and self.Alt): self.Clear()
 
     def ReturnKey(self, event):
-        self.Apply()
+        if (self.enableKeyboardShortcuts): self.Apply()
 
     def F1(self, event):
-        self.Help() # :D
+        if (self.enableKeyboardShortcuts): self.Help() # :D
 
 
 cube = RubiksCubeEngine()
