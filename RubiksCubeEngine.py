@@ -187,17 +187,17 @@ class RubiksCubeEngine:
             if i == self.view:
                 a.select()
 
-        # Enable keyboard shorcuts
-        self.checkButtonShortcutsVar = tkinter.IntVar(master=windowSettings)
-        checkButtonShortcuts = tkinter.Checkbutton(windowSettings, text='Enable keyboard shortcuts', variable=self.checkButtonShortcutsVar, command=self.SettingsKeyboardShortcutsUpdate)
-        if (self.enableKeyboardShortcuts): checkButtonShortcuts.select()
-        checkButtonShortcuts.grid(columnspan=2)
-
         # Show Stickers' ID Tags
         self.checkButtonStickersID = tkinter.IntVar(master=windowSettings)
         checkButtonStickersID = tkinter.Checkbutton(windowSettings, text='Show stickers\' ID tags', variable=self.checkButtonStickersID, command=self.SettingsStickersIDUpdate)
         if (self.showStickersID): checkButtonStickersID.select()
-        checkButtonStickersID.grid(columnspan=2)
+        checkButtonStickersID.grid(columnspan=2, sticky=tkinter.W)
+
+        # Enable keyboard shorcuts
+        self.checkButtonShortcutsVar = tkinter.IntVar(master=windowSettings)
+        checkButtonShortcuts = tkinter.Checkbutton(windowSettings, text='Enable keyboard shortcuts', variable=self.checkButtonShortcutsVar, command=self.SettingsKeyboardShortcutsUpdate)
+        if (self.enableKeyboardShortcuts): checkButtonShortcuts.select()
+        checkButtonShortcuts.grid(columnspan=2, sticky=tkinter.W)
                 
         windowSettings.mainloop()
         
