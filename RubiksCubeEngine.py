@@ -94,9 +94,10 @@ class RubiksCubeEngine:
                 for line in range(3):
                     for sticker in range(3):
                         if face == 4:
-                            c = self.colors[self.rc.stickers[face][8-(3*line+sticker)][0]]
+                            i = 8-(3*line+sticker)
                         else:
-                            c = self.colors[self.rc.stickers[face][3*line+sticker][0]]
+                            i = 3*line+sticker
+                        c = self.colors[self.rc.stickers[face][i][0]]
                         
                         self.c.create_rectangle(spaceX + 10 + sticker*(self.size['cubie']+self.size['space']),
                                                 spaceY + 50 + line*(self.size['cubie']+self.size['space']),
