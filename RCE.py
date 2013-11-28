@@ -20,6 +20,8 @@ class RCE:
             
     def __init__(self, alg = ''):
         self.stickers = [[self.turns_i[face] + str(sticker) for sticker in range(9)] for face in range(6)]
+        if type(alg) == type(""):
+            alg = alg.split()
         self.alg(alg)
 
     def __eq__(self, other):
