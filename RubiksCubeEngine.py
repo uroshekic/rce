@@ -13,6 +13,7 @@ class RubiksCubeEngine:
 
     enableKeyboardShortcuts = True
     Alt = False
+    showStickersID = True
     
     def __init__(self):
         self.setView(1)
@@ -105,6 +106,10 @@ class RubiksCubeEngine:
                                                 spaceY + 50 + (line+1)*self.size['cubie']+line*self.size['space'],
                                                 fill=c,
                                                 outline=self.colors['border'])
+                        if (self.showStickersID):
+                            self.c.create_text(spaceX + 10 + sticker*(self.size['cubie']+self.size['space']) + self.size['cubie']/2,
+                                           spaceY + 50 + line*(self.size['cubie']+self.size['space']) + self.size['cubie']/2,
+                                           text=RCE.turns_i[face] + str(i))
 
         else:
             self.size = { 'cubie' : 50, 'space' : 5 }
@@ -151,6 +156,10 @@ class RubiksCubeEngine:
 
     def SettingsKeyboardShortcutsUpdate(self):
         self.enableKeyboardShortcuts = True if self.checkButtonShortcutsVar.get() == 1 else False
+
+    def SettingsStickersIDUpdate(self):
+        self.showStickersID = True if self.checkButtonStickersID.get() == 1 else False
+        self.draw()
     
     def Settings(self):
         windowSettings = tkinter.Tk()
@@ -183,6 +192,12 @@ class RubiksCubeEngine:
         checkButtonShortcuts = tkinter.Checkbutton(windowSettings, text='Enable keyboard shortcuts', variable=self.checkButtonShortcutsVar, command=self.SettingsKeyboardShortcutsUpdate)
         if (self.enableKeyboardShortcuts): checkButtonShortcuts.select()
         checkButtonShortcuts.grid(columnspan=2)
+
+        # Show Stickers' ID Tags
+        self.checkButtonStickersID = tkinter.IntVar(master=windowSettings)
+        checkButtonStickersID = tkinter.Checkbutton(windowSettings, text='Show stickers\' ID tags', variable=self.checkButtonStickersID, command=self.SettingsStickersIDUpdate)
+        if (self.showStickersID): checkButtonStickersID.select()
+        checkButtonStickersID.grid(columnspan=2)
                 
         windowSettings.mainloop()
         
