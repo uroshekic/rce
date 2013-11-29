@@ -13,7 +13,7 @@ class RubiksCubeEngine:
 
     enableKeyboardShortcuts = True
     Alt = False
-    showStickersID = True
+    showStickersID = False
     
     def __init__(self):
         self.setView(1)
