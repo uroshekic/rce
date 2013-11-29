@@ -82,7 +82,32 @@ class RCE:
             self.stickers[2][6], self.stickers[2][7], self.stickers[2][8], \
             self.stickers[4][2], self.stickers[4][1], self.stickers[4][0], \
             self.stickers[3][6], self.stickers[3][7], self.stickers[3][8]
-                
+    
+    def r(self, s):
+        if s == 'X':
+            f1, f2 = 'R', 'L'
+        elif s == 'Y':
+            f1, f2 = 'U', 'D'
+        else:
+            return
+        
+        self.stickers[self.turns[f1]][0], self.stickers[self.turns[f1]][6], self.stickers[self.turns[f1]][8], self.stickers[self.turns[f1]][2] \
+        = \
+        self.stickers[self.turns[f1]][6], self.stickers[self.turns[f1]][8], self.stickers[self.turns[f1]][2], self.stickers[self.turns[f1]][0]
+
+        self.stickers[self.turns[f1]][1], self.stickers[self.turns[f1]][3], self.stickers[self.turns[f1]][7], self.stickers[self.turns[f1]][5] \
+        = \
+        self.stickers[self.turns[f1]][3], self.stickers[self.turns[f1]][7], self.stickers[self.turns[f1]][5], self.stickers[self.turns[f1]][1]
+        
+
+        self.stickers[self.turns[f2]][6], self.stickers[self.turns[f2]][8], self.stickers[self.turns[f2]][2], self.stickers[self.turns[f2]][0] \
+        = \
+        self.stickers[self.turns[f2]][0], self.stickers[self.turns[f2]][6], self.stickers[self.turns[f2]][8], self.stickers[self.turns[f2]][2]
+
+        self.stickers[self.turns[f2]][3], self.stickers[self.turns[f2]][7], self.stickers[self.turns[f2]][5], self.stickers[self.turns[f2]][1] \
+        = \
+        self.stickers[self.turns[f2]][1], self.stickers[self.turns[f2]][3], self.stickers[self.turns[f2]][7], self.stickers[self.turns[f2]][5]
+    
     def rotate(self, s):
         if s == 'X':
             self.stickers[1], self.stickers[5], self.stickers[4], self.stickers[0] \
@@ -91,11 +116,12 @@ class RCE:
         elif s == 'Y':
             self.stickers[1], self.stickers[2], self.stickers[4], self.stickers[3] \
             = \
-            self.stickers[2], self.stickers[4], self.stickers[3], self.stickers[1]
+            self.stickers[2], self.stickers[4][::-1], self.stickers[3][::-1], self.stickers[1]
         elif s == 'Z':
-            self.stickers[2], self.stickers[0], self.stickers[3], self.stickers[5] \
-            = \
-            self.stickers[0], self.stickers[3], self.stickers[5], self.stickers[2]
+            self.alg(["X", "Y", "X'"])
+            return
+        
+        self.r(s)
     
     def alg(self, alg):
         for m in alg:
