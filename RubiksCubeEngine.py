@@ -108,8 +108,11 @@ class RubiksCubeEngine:
                                                 outline=self.colors['border'])
                         if (self.showStickersID):
                             self.c.create_text(spaceX + 10 + sticker*(self.size['cubie']+self.size['space']) + self.size['cubie']/2,
-                                           spaceY + 50 + line*(self.size['cubie']+self.size['space']) + self.size['cubie']/2,
+                                           spaceY + 50 + line*(self.size['cubie']+self.size['space']) + self.size['cubie']/2 - self.size['cubie']/5,
                                            text=RCE.turns_i[face] + str(i))
+                            self.c.create_text(spaceX + 10 + sticker*(self.size['cubie']+self.size['space']) + self.size['cubie']/2,
+                                           spaceY + 50 + line*(self.size['cubie']+self.size['space']) + self.size['cubie']/2 + self.size['cubie']/5,
+                                           text=self.rc.stickers[face][i])
 
         else:
             self.size = { 'cubie' : 50, 'space' : 5 }
