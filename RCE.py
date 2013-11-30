@@ -19,15 +19,18 @@ class RCE:
     possible_rotations = ['X', 'Y', 'Z']
             
     def __init__(self, alg = ''):
+        ''' Create a Rubik's cube and apply an algorithm to it. '''
         self.stickers = [[self.turns_i[face] + str(sticker) for sticker in range(9)] for face in range(6)]
         if type(alg) == type(""):
             alg = alg.split()
         self.alg(alg)
 
     def __eq__(self, other):
-        return self.stickers == other.stickers # TO-DO: Check other 5 combinations (when colors are swapped)
+        ''' Check whether two given cubes (RCE objects) represent the same state. TO-DO. '''
+        return self.stickers == other.stickers # Check 5 other combinations (when colors are swapped)
 
-    def turn(self, f): # Clockwise
+    def turn(self, f):
+        ''' Apply a clockwise turn of one layer to the cube. '''
         f = self.turns[f]
         self.stickers[f] = [self.stickers[f][6], self.stickers[f][3], self.stickers[f][0], \
                            self.stickers[f][7], self.stickers[f][4], self.stickers[f][1], \
@@ -84,6 +87,7 @@ class RCE:
             self.stickers[3][6], self.stickers[3][7], self.stickers[3][8]
     
     def r(self, s):
+        ''' Helper method to rotate(). '''
         if s == 'X':
             f1, f2 = 'R', 'L'
         elif s == 'Y':
@@ -109,6 +113,7 @@ class RCE:
         self.stickers[self.turns[f2]][1], self.stickers[self.turns[f2]][3], self.stickers[self.turns[f2]][7], self.stickers[self.turns[f2]][5]
     
     def rotate(self, s):
+        ''' Apply a rotation to the cube. '''
         if s == 'X':
             self.stickers[1], self.stickers[5], self.stickers[4], self.stickers[0] \
             = \
@@ -124,6 +129,9 @@ class RCE:
         self.r(s)
     
     def alg(self, alg):
+        ''' Apply an algorithm to the cube. '''
+        #if typeof(alg) == typeof(""): alg = alg.split()
+        
         for m in alg:
             if m[0] in self.possible_rotations:
                 if len(m) == 1:
