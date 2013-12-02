@@ -7,8 +7,6 @@
 #                       4 - orange  5 - yellow
 # Possible turns: P, P', P2 where P element of { U, F, R, B, L, D } + { x, y, z }
 
-# Rotations (x, y, z) HAVE NOT BEEN TESTED YET!
-
 class RCE:
     turns = {'U' : 0, 'F' : 1, 'R' : 2, 'L' : 3, 'B' : 4, 'D' : 5}
     turns_i = {0 : 'U', 1 : 'F', 2 : 'R', 3 : 'L', 4 : 'B', 5 : 'D'}
@@ -17,7 +15,10 @@ class RCE:
     possible_raw_moves = list(range(6))
     possible_turns = ['U', 'F', 'R', 'L', 'B', 'D']
     possible_rotations = ['X', 'Y', 'Z']
-            
+
+    all_possible_rotations = [ '' ] + [ r + suffix for r in possible_rotations for suffix in [ "", "'", "2" ] ]
+    all_possible_moves = [ m + suffix for m in possible_turns[:] for suffix in [ "", "'", "2" ] ]
+                
     def __init__(self, alg = ''):
         ''' Create a Rubik's cube and apply an algorithm to it. '''
         self.stickers = [[self.turns_i[face] + str(sticker) for sticker in range(9)] for face in range(6)]
@@ -155,6 +156,41 @@ class RCE:
                         self.turn(m[0])
                         self.turn(m[0])
                         self.turn(m[0])
+
+    def valid(self):
+        ''' Return whether given cube represents a valid RCE object. '''
+        if len(self.stickers) != 6: return False # A cube must have 6 faces
+        
+        c = [ 0 for i in range(len(self.stickers)) ]
+        e = c[:]
+        colors = {}
+        for face in self.possible_turns:
+            colors[face] = 0
+        
+        for face in range(len(self.stickers)):
+            if len(self.stickers[face]) != 9: return False # Each face must have 9 tiles
+            for i, sticker in enumerate(self.stickers[face]):
+                if sticker[0] not in self.turns or not (0 <= int(sticker[1:]) <= 8): return False # Valid tile names
+                
+                sFace = self.turns[sticker[0]]        
+                if i % 2:
+                    e[sFace] += 1 # Edge
+                else:
+                    c[sFace] += 1 # Corner
+
+                colors[sticker[0]] += 1
+
+        # There must be 5 corner tiles and 4 edge tiles on each face (center piece counts as a corner)
+        for i in c:
+            if i != 5: return False
+        for i in e:
+            if i != 4: return False
+
+        # There must be 9 tiles of each color
+        for f in colors:
+            if colors[f] != 9: return False
+        
+        return True
 
     # For testing purposes
     def output(self, style = 'text_net'):
